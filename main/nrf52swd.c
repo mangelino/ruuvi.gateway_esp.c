@@ -66,7 +66,6 @@ static bool                g_nrf52swd_is_spi_initialized;
 static bool                g_nrf52swd_is_spi_device_added;
 static uint64_t            g_nrf52swd_initialized_gpio_bitmask;
 
-NRF52SWD_STATIC
 bool
 nrf52swd_init_gpio_cfg_nreset(void)
 {
@@ -87,7 +86,6 @@ nrf52swd_init_gpio_cfg_nreset(void)
     return true;
 }
 
-NRF52SWD_STATIC
 bool
 nrf52swd_init_gpio_cfg_analog_switch_control(void)
 {

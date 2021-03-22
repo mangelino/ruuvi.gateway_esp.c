@@ -33,6 +33,7 @@
 
 #define LOG_LOCAL_LEVEL LOG_LEVEL_DEBUG
 #include "log.h"
+#include "nrf52swd.h"
 
 static const char TAG[] = "ruuvi_gateway";
 
@@ -311,6 +312,48 @@ wifi_init(const bool flag_use_eth, const wifi_ssid_t *const p_gw_wifi_ssid)
     return true;
 }
 
+void test_nrf52_reset(void)
+{
+#define ESP32_GPIO_ANALOG_SWITCH_CONTROL GPIO_NUM_14 /* MTMS */
+    const uint32_t delay_ticks = pdMS_TO_TICKS(500);
+
+    extern bool nrf52swd_init_gpio_cfg_analog_switch_control(void);
+    LOG_INFO("nrf52swd_init_gpio_cfg_analog_switch_control");
+    vTaskDelay(delay_ticks);
+    nrf52swd_init_gpio_cfg_analog_switch_control();
+
+    extern bool nrf52swd_init_gpio_cfg_nreset(void);
+    LOG_INFO("nrf52swd_init_gpio_cfg_nreset");
+    vTaskDelay(delay_ticks);
+    nrf52swd_init_gpio_cfg_nreset();
+
+    LOG_INFO("Set ANALOG_SWITCH_CONTROL <- 0");
+    vTaskDelay(delay_ticks);
+    (void)gpio_set_level(ESP32_GPIO_ANALOG_SWITCH_CONTROL, 0);
+
+    LOG_INFO("NRF52_GPIO_NRST <- 0");
+    vTaskDelay(delay_ticks);
+    gpio_set_level(NRF52_GPIO_NRST, 0U);
+
+    LOG_INFO("Set ANALOG_SWITCH_CONTROL <- 1");
+    vTaskDelay(delay_ticks);
+    // ESP32 resets after setting ANALOG_SWITCH_CONTROL to 1
+    (void)gpio_set_level(ESP32_GPIO_ANALOG_SWITCH_CONTROL, 1);
+
+    LOG_INFO("NRF52_GPIO_NRST <- 1");
+    vTaskDelay(delay_ticks);
+    gpio_set_level(NRF52_GPIO_NRST, 1U);
+
+    LOG_INFO("NRF52_GPIO_NRST <- 0");
+    vTaskDelay(delay_ticks);
+    gpio_set_level(NRF52_GPIO_NRST, 0U);
+
+    while (true)
+    {
+        vTaskDelay(100);
+    }
+}
+
 void
 app_main(void)
 {
@@ -354,6 +397,9 @@ app_main(void)
         LOG_INFO("Reset activated");
         esp_restart();
     }
+#if 1
+    test_nrf52_reset();
+#endif
 
     nrf52fw_update_fw_if_necessary();
 
