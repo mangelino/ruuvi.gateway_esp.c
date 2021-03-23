@@ -402,7 +402,6 @@ app_main(void)
     while (1)
     {
         // reset nRF52 every 30 seconds
-        extern void nrf52fw_hw_reset_nrf52(const bool flag_reset);
 
         vTaskDelay(pdMS_TO_TICKS(30 * 1000));
 
