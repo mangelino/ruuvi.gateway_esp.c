@@ -398,4 +398,15 @@ app_main(void)
         LOG_ERR("Can't create thread");
     }
     LOG_INFO("Main started");
+
+    while (1)
+    {
+        // reset nRF52 every 30 seconds
+        extern void nrf52fw_hw_reset_nrf52(const bool flag_reset);
+
+        vTaskDelay(pdMS_TO_TICKS(30 * 1000));
+
+        LOG_INFO("Call nrf52fw_software_reset");
+        nrf52fw_software_reset();
+    }
 }
