@@ -13,36 +13,37 @@ or Ruuvi Gateway A1 boards, contact lauri@ruuvi.com for details on how to get on
 Latest documentation and roadmap is at https://docs.ruuvi.com/gw-esp32-firmware . 
 
 ### IO pins for devkit:
-| ESP32  |   Function   |
+| ESP32 devkit |   Function   |
 |--------|--------------|
 | GPIO35 | Reset button |
 | 4 | UART TX |
 | 5 | UART RX |
+| 13 | LED |
 
 ### nRF52832 devkit
-| ESP32  | nRF52832 devkit |     Function     |
-|--------|-----------------|------------------|
-| GPIO5  | P0.11           | UART: ESP -> NRF |
-| GPIO36 | P0.31           | UART: NRF -> ESP |
-| GPIO15 | Debug In: 4     | SWD CLK          |
-| GPIO16 | Debug In: 2     | SWD I/O          |
-| GPIO17 | Debug In: 10    | SWD NRST         |
-| 3V3    | Debug In: 1     | VCC +3.3V        |
-| GND    | Debug In: 3     | GND              |
+| ESP32  | nRF52832 devkit | PCA10040 |     Function     |
+|--------|-----------------|----------|------------------|
+| GPIO5  | P0.11           | P0.11 | UART: ESP -> NRF |
+| GPIO36 | P0.31           | P0.12 | UART: NRF -> ESP |
+| GPIO15 | Debug In: 4     | <- | SWD CLK          |
+| GPIO16 | Debug In: 2     | <- | SWD I/O          |
+| GPIO17 | Debug In: 10    | <- | SWD NRST         |
+| 3V3    | Debug In: 1     | <- | VCC +3.3V        |
+| GND    | Debug In: 3     | <- | GND              |
 
 ### Ethernet:
-| ESP32 | LAN87210 |
-|----|---|
-|  0 | nINT/REFCLK |
-| 23 | NC/CLOCK_ENABLE* |
-| 15 | MDC |
-| 18 | MDIO |
-| 19 | TX0 |
-| 21 | TX_EN |
-| 22 | TX1 |
-| 25 | RX0 |
-| 26 | RX1 |
-| 27 | CRS/RX_DV |
+| ESP32 | LAN87210 | Notes |
+|----|---|---|
+|  0 | nINT/REFCLK | Use PullUp resistor|
+| 2 | NC/CLOCK_ENABLE* ||
+| 23 | MDC ||
+| 18 | MDIO ||
+| 19 | TX0 ||
+| 21 | TX_EN ||
+| 22 | TX1 ||
+| 25 | RX0 ||
+| 26 | RX1 ||
+| 27 | CRS/RX_DV ||
 
 ** ESP32 will use external clock signal from LAN8720 and some modifications are needed for that: **
 * [WaveShare LAN8720 modification for clock](https://sautter.com/blog/ethernet-on-esp32-using-lan8720/)
