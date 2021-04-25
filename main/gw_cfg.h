@@ -28,15 +28,18 @@
 extern "C" {
 #endif
 
-#define MAX_CONFIG_STR_LEN  64
-#define MAX_HTTP_URL_LEN    256
-#define MAX_HTTP_USER_LEN   51
-#define MAX_HTTP_PASS_LEN   51
-#define MAX_MQTT_SERVER_LEN 256
-#define MAX_MQTT_PREFIX_LEN 51
-#define MAX_MQTT_USER_LEN   51
-#define MAX_MQTT_PASS_LEN   51
-#define IP_STR_LEN          17
+#define MAX_CONFIG_STR_LEN      64
+#define MAX_HTTP_URL_LEN        256
+#define MAX_HTTP_USER_LEN       51
+#define MAX_HTTP_PASS_LEN       51
+#define MAX_MQTT_SERVER_LEN     256
+#define MAX_MQTT_PREFIX_LEN     51
+#define MAX_MQTT_USER_LEN       51
+#define MAX_MQTT_PASS_LEN       51
+#define MAX_MQTT_PRIVKEY_LEN    2048
+#define MAX_MQTT_DEVICECERT_LEN 2048
+#define MAX_MQTT_CACERT_LEN     2048
+#define IP_STR_LEN              17
 
 #define RUUVI_COMPANY_ID 0x0499
 
@@ -62,6 +65,9 @@ typedef struct ruuvi_gw_cfg_mqtt_t
     char     mqtt_prefix[MAX_MQTT_PREFIX_LEN];
     char     mqtt_user[MAX_MQTT_USER_LEN];
     char     mqtt_pass[MAX_MQTT_PASS_LEN];
+    char     mqtt_privkey[MAX_MQTT_PRIVKEY_LEN];
+    char     mqtt_devicecert[MAX_MQTT_DEVICECERT_LEN];
+    char     mqtt_cacert[MAX_MQTT_CACERT_LEN];
 } ruuvi_gw_cfg_mqtt_t;
 
 typedef struct ruuvi_gw_cfg_http_t

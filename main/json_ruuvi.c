@@ -114,7 +114,7 @@ json_ruuvi_parse(const cJSON *p_json_root, ruuvi_gateway_config_t *p_gw_cfg)
         "mqtt_user",
         p_gw_cfg->mqtt.mqtt_user,
         sizeof(p_gw_cfg->mqtt.mqtt_user),
-        true);
+        false);
     if (!json_ruuvi_copy_string_val(
             p_json_root,
             "mqtt_pass",
@@ -124,7 +124,33 @@ json_ruuvi_parse(const cJSON *p_json_root, ruuvi_gateway_config_t *p_gw_cfg)
     {
         LOG_WARN("mqtt_pass not found or not changed");
     }
-
+    if (!json_ruuvi_copy_string_val(
+        p_json_root,
+        "mqtt_privkey",
+        p_gw_cfg->mqtt.mqtt_privkey,
+        sizeof(p_gw_cfg->mqtt.mqtt_privkey),
+        false)) 
+    {
+        LOG_WARN("mqtt_privkey not found or not changed");
+    }
+    if (!json_ruuvi_copy_string_val(
+        p_json_root,
+        "mqtt_devicecert",
+        p_gw_cfg->mqtt.mqtt_devicecert,
+        sizeof(p_gw_cfg->mqtt.mqtt_devicecert),
+        false)) 
+    {
+        LOG_WARN("mqtt_devicecert not found or not changed");
+    }
+    if (!json_ruuvi_copy_string_val(
+        p_json_root,
+        "mqtt_cacert",
+        p_gw_cfg->mqtt.mqtt_cacert,
+        sizeof(p_gw_cfg->mqtt.mqtt_cacert),
+        false)) 
+    {
+        LOG_WARN("mtt_cacert not found or not changed");
+    }
     json_ruuvi_get_bool_val(p_json_root, "use_http", &p_gw_cfg->http.use_http, true);
     json_ruuvi_copy_string_val(p_json_root, "http_url", p_gw_cfg->http.http_url, sizeof(p_gw_cfg->http.http_url), true);
     json_ruuvi_copy_string_val(

@@ -93,7 +93,7 @@ mqtt_publish_connect(void)
     mqtt_create_full_topic(&topic, g_gateway_config.mqtt.mqtt_prefix, "gw_status");
     LOG_INFO("esp_mqtt_client_publish: topic:'%s', message:'%s'", topic.buf, p_message);
     const int32_t mqtt_qos         = 1;
-    const int32_t mqtt_flag_retain = 1;
+    const int32_t mqtt_flag_retain = 0;
 
     const mqtt_message_id_t message_id
         = esp_mqtt_client_publish(gp_mqtt_client, topic.buf, p_message, strlen(p_message), mqtt_qos, mqtt_flag_retain);
@@ -195,9 +195,9 @@ mqtt_app_start(void)
 
     const esp_mqtt_client_config_t mqtt_cfg = {
         .event_handle                = &mqtt_event_handler,
-        .event_loop_handle           = NULL,
+        //.event_loop_handle           = NULL,
         .host                        = g_gateway_config.mqtt.mqtt_server,
-        .uri                         = NULL,
+        //.uri                         = NULL,
         .port                        = g_gateway_config.mqtt.mqtt_port,
         .client_id                   = g_gw_mac_sta_str.str_buf,
         .username                    = g_gateway_config.mqtt.mqtt_user,
@@ -205,29 +205,29 @@ mqtt_app_start(void)
         .lwt_topic                   = lwt_topic_buf.buf,
         .lwt_msg                     = p_lwt_message,
         .lwt_qos                     = 1,
-        .lwt_retain                  = true,
-        .lwt_msg_len                 = 0,
-        .disable_clean_session       = 0,
-        .keepalive                   = 0,
-        .disable_auto_reconnect      = false,
-        .user_context                = NULL,
-        .task_prio                   = 0,
-        .task_stack                  = 0,
-        .buffer_size                 = 0,
-        .cert_pem                    = NULL,
-        .cert_len                    = 0,
-        .client_cert_pem             = NULL,
-        .client_cert_len             = 0,
-        .client_key_pem              = NULL,
-        .client_key_len              = 0,
-        .transport                   = MQTT_TRANSPORT_OVER_TCP,
-        .refresh_connection_after_ms = 0,
-        .psk_hint_key                = NULL,
-        .use_global_ca_store         = false,
-        .reconnect_timeout_ms        = 0,
-        .alpn_protos                 = NULL,
-        .clientkey_password          = NULL,
-        .clientkey_password_len      = 0,
+        .lwt_retain                  = false,
+        //.lwt_msg_len                 = 0,
+        //.disable_clean_session       = 0,
+        .keepalive                   = 1000,
+        //.disable_auto_reconnect      = false,
+        //.user_context                = NULL,
+        //.task_prio                   = 0,
+        //.task_stack                  = 0,
+        //.buffer_size                 = 0,
+        .cert_pem                    = g_gateway_config.mqtt.mqtt_cacert,
+        //.cert_len                    = 0,
+        .client_cert_pem             = g_gateway_config.mqtt.mqtt_devicecert,
+        //.client_cert_len             = 0,
+        .client_key_pem              = g_gateway_config.mqtt.mqtt_privkey,
+        //.client_key_len              = 0,
+        .transport                   = (sizeof(g_gateway_config.mqtt.mqtt_devicecert) > 0) ? MQTT_TRANSPORT_OVER_SSL : MQTT_TRANSPORT_OVER_TCP,
+        //.refresh_connection_after_ms = 0,
+        //.psk_hint_key                = NULL,
+        //.use_global_ca_store         = false,
+        //.reconnect_timeout_ms        = 0,
+        //.alpn_protos                 = NULL,
+        //.clientkey_password          = NULL,
+        //.clientkey_password_len      = 0,
     };
     gp_mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
     if (NULL == gp_mqtt_client)

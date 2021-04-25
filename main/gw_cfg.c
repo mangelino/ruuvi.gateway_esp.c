@@ -31,7 +31,10 @@
             .mqtt_port = 0, \
             .mqtt_prefix = { 0 }, \
             .mqtt_user = { 0 }, \
-            .mqtt_pass = { 0 },                 \
+            .mqtt_pass = { 0 }, \
+            .mqtt_privkey = { 0 }, \
+            .mqtt_devicecert = { 0 }, \
+            .mqtt_cacert = { 0 }, \
         }, \
         .http = { \
             .use_http = true, \
@@ -82,6 +85,9 @@ gw_cfg_print_to_log(const ruuvi_gateway_config_t *p_config)
     LOG_INFO("config: mqtt prefix: %s", p_config->mqtt.mqtt_prefix);
     LOG_INFO("config: mqtt user: %s", p_config->mqtt.mqtt_user);
     LOG_INFO("config: mqtt password: %s", "********");
+    LOG_INFO("config: mqtt devicecert: %s", p_config->mqtt.mqtt_devicecert);
+    LOG_INFO("config: mqtt cacert: %s", p_config->mqtt.mqtt_cacert);
+    LOG_INFO("config: mqtt privkey: %s", p_config->mqtt.mqtt_privkey);
     LOG_INFO("config: use http: %d", p_config->http.use_http);
     LOG_INFO("config: http url: %s", p_config->http.http_url);
     LOG_INFO("config: http user: %s", p_config->http.http_user);
@@ -201,9 +207,21 @@ gw_cfg_json_add_items_mqtt(cJSON *p_json_root, const ruuvi_gateway_config_t *p_c
     {
         return false;
     }
+    if (!gw_cfg_json_add_string(p_json_root, "mqtt_devicecert", p_cfg->mqtt.mqtt_devicecert))
+    {
+        return false;
+    }
+    if (!gw_cfg_json_add_string(p_json_root, "mqtt_cacert", p_cfg->mqtt.mqtt_cacert))
+    {
+        return false;
+    }
 #if 0
     // Don't send to browser because of security
     if (!gw_cfg_json_add_string(p_json_root, "mqtt_pass", p_cfg->mqtt_pass))
+    {
+        return false;
+    }
+    if (!gw_cfg_json_add_string(p_json_root, "mqtt_privkey", p_cfg->mqtt.mqtt_privkey))
     {
         return false;
     }
